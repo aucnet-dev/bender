@@ -84,7 +84,7 @@ class Check(Base):
 
     def check_output(self):
         """Concourse resource `check` output """
-        print(json.dumps(self.checked_msg, indent=4, sort_keys=True))
+        print(json.dumps(self.checked_msg, indent=4))
 
 def main():
     """Concourse resource `check` main """
