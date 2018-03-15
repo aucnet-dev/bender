@@ -72,19 +72,19 @@ class Check(Base):
             if messages["messages"]:
                 oldest = messages["messages"][-1]["ts"]
                 self._filter_msgs(messages["messages"], len(messages["messages"]))
-        print("BFOREF  SORT")
-        print(json.dumps(self.checked_msg))
+        print("BFOREF  SORT", file=sys.stderr)
+        print(json.dumps(self.checked_msg), file=sys.stderr)
         if not self.checked_msg:
             # Sort messages by 'ts' chronologically
             self.checked_msg = sorted(self.checked_msg, key=lambda k: k['id_ts'], reverse=True)
-            print("AFTER  SORT")
-            print(json.dumps(self.checked_msg))
+            print("AFTER  SORT", file=sys.stderr)
+            print(json.dumps(self.checked_msg), file=sys.stderr)
             # if we don't have version passed. So report latest only
             try:
                 self.checked_msg = [self.checked_msg[0]]
             except IndexError:
                 self.checked_msg = []
-        print(json.dumps(self.checked_msg))
+        print(json.dumps(self.checked_msg), file=sys.stderr)
     def check_output(self):
         """Concourse resource `check` output """
         print(json.dumps(self.checked_msg, indent=4))
