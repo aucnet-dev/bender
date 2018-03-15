@@ -79,7 +79,7 @@ class Check(Base):
             if not self.version.get("id_ts"):
                 # if we don't have version passed. So report latest only
                 try:
-                    self.checked_msg = [self.checked_msg[0]]
+                    self.checked_msg = [self.checked_msg[-1]]
                 except IndexError:
                     self.checked_msg = []
         if  self.version.get("id_ts", 0) != 0:
