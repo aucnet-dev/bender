@@ -90,11 +90,12 @@ def main():
     """Concourse resource `check` main """
     payload = PayLoad()
     slack_client = Check(**payload.args)
+    print(json.dumps(self.checked_msg), file=sys.stderr)
     if slack_client.slack_unread:
-        
         slack_client.check_logic_unread()
     else:
         slack_client.check_logic_concourse()
+    print(json.dumps(self.checked_msg), file=sys.stderr)
     slack_client.check_output()
 
 if __name__ == '__main__':
