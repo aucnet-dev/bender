@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import json
+import sys
 
 from payload import PayLoad
 from functions import list_get
@@ -59,12 +60,12 @@ class Check(Base):
     def check_logic_concourse(self, max_api_count=1000, limit=5):
         """Concourse resource `check` logic using version passed by concourse."""
         oldest = self.version.get("id_ts", 0)
+        print(json.dumps(oldest), file=sys.stderr)
         has_more = True
         while has_more and limit >= 0:
             messages = self._call_api(self.channel_type + ".history",
                                       channel=self.channel_id,
                                       count=max_api_count,
-                                      inclusive=True,
                                       oldest=oldest)
             limit -= 1
             has_more = messages.get("has_more")
@@ -80,7 +81,7 @@ class Check(Base):
                 self.checked_msg = [self.checked_msg[0]]
             except IndexError:
                 self.checked_msg = []
-
+        print(json.dumps(self.checked_msg), file=sys.stderr)
     def check_output(self):
         """Concourse resource `check` output """
         print(json.dumps(self.checked_msg, indent=4))
@@ -90,6 +91,7 @@ def main():
     payload = PayLoad()
     slack_client = Check(**payload.args)
     if slack_client.slack_unread:
+        
         slack_client.check_logic_unread()
     else:
         slack_client.check_logic_concourse()
