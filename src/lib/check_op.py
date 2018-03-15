@@ -83,7 +83,7 @@ class Check(Base):
                 except IndexError:
                     self.checked_msg = []
         if  self.version.get("id_ts", 0) != 0:
-            self.checked_msg.append({"id_ts": self.version.get("id_ts", 0)})
+            self.checked_msg.insert(0,{"id_ts": self.version.get("id_ts", 0)})
     def check_output(self):
         """Concourse resource `check` output """
         print(json.dumps(self.checked_msg, indent=4))
