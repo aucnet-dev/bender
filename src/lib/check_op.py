@@ -82,7 +82,8 @@ class Check(Base):
                     self.checked_msg = [self.checked_msg[0]]
                 except IndexError:
                     self.checked_msg = []
-
+        elif  oldest != 0:
+            self.checked_msg.append({"id_ts": oldest})
     def check_output(self):
         """Concourse resource `check` output """
         print(json.dumps(self.checked_msg, indent=4))
