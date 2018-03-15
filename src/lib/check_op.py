@@ -90,6 +90,7 @@ def main():
     """Concourse resource `check` main """
     payload = PayLoad()
     slack_client = Check(**payload.args)
+    print(json.dumps(slack_client.checked_msg))
     print("START", file=sys.stderr)
     if slack_client.slack_unread:
         print("check_logic_unread", file=sys.stderr)
