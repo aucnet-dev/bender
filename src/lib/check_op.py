@@ -72,19 +72,17 @@ class Check(Base):
             if messages["messages"]:
                 oldest = messages["messages"][-1]["ts"]
                 self._filter_msgs(messages["messages"], len(messages["messages"]))
-        print("BFOREF  SORT", file=sys.stderr)
-        print(json.dumps(self.checked_msg), file=sys.stderr)
+
         if  len(self.checked_msg) > 0:
             # Sort messages by 'ts' chronologically
             self.checked_msg = sorted(self.checked_msg, key=lambda k: k['id_ts'], reverse=True)
-            print("AFTER  SORT", file=sys.stderr)
-            print(json.dumps(self.checked_msg), file=sys.stderr)
-            # if we don't have version passed. So report latest only
-            try:
-                self.checked_msg = [self.checked_msg[0]]
-            except IndexError:
-                self.checked_msg = []
-        print(json.dumps(self.checked_msg), file=sys.stderr)
+            if not self.version.get("id_ts"):
+                # if we don't have version passed. So report latest only
+                try:
+                    self.checked_msg = [self.checked_msg[0]]
+                except IndexError:
+                    self.checked_msg = []
+
     def check_output(self):
         """Concourse resource `check` output """
         print(json.dumps(self.checked_msg, indent=4))
@@ -94,10 +92,8 @@ def main():
     payload = PayLoad()
     slack_client = Check(**payload.args)
     if slack_client.slack_unread:
-        print("check_logic_unread", file=sys.stderr)
         slack_client.check_logic_unread()
     else:
-        print("check_logic_concourse", file=sys.stderr)
         slack_client.check_logic_concourse()
     slack_client.check_output()
 
