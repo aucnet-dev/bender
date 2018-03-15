@@ -74,7 +74,7 @@ class Check(Base):
                 self._filter_msgs(messages["messages"], len(messages["messages"]))
         print("BFOREF  SORT", file=sys.stderr)
         print(json.dumps(self.checked_msg), file=sys.stderr)
-        if not self.checked_msg:
+        if  len(self.checked_msg) > 0:
             # Sort messages by 'ts' chronologically
             self.checked_msg = sorted(self.checked_msg, key=lambda k: k['id_ts'], reverse=True)
             print("AFTER  SORT", file=sys.stderr)
